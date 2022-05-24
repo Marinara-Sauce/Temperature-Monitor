@@ -1,5 +1,11 @@
 package com.temp.reader.insulationmonitor;
 
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import com.temp.reader.insulationmonitor.utils.ReadTempTask;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,6 +13,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class InsulationMonitorApplication {
 
 	public static void main(String[] args) {
+
+		//Setup the temp reader
+		TimerTask task = new ReadTempTask();
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(task, new Date(), 10000);
+
 		SpringApplication.run(InsulationMonitorApplication.class, args);
 	}
 
