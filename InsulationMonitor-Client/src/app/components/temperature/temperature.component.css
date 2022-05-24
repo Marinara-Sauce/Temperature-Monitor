@@ -1,0 +1,16 @@
+.temp {
+    display: table;
+    margin: auto;
+    height: 100%;
+    text-align: center;
+}
+
+.indoor {
+    padding-right: 16px;
+    float: left;
+}
+
+.outdoor {
+    padding-left: 16px;
+    float: right;
+}
