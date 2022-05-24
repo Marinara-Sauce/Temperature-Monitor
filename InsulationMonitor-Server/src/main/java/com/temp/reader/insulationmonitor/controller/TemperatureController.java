@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 
 import com.temp.reader.insulationmonitor.persistence.TemperatureDAO;
 
-import org.python.util.PythonInterpreter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,14 +16,16 @@ public class TemperatureController {
 
     private TemperatureDAO tempDao;
 
-    private PythonInterpreter interperter;
     private Runtime rt;
 
     public TemperatureController(TemperatureDAO tempDao) {
         this.tempDao = tempDao;
 
-        interperter = new PythonInterpreter();
         rt = Runtime.getRuntime();
+    }
+
+    public TemperatureController() {
+        
     }
 
     @GetMapping("")
