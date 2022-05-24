@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "InsulationMonitor-Client"
+		},
+		{
+			"path": "InsulationMonitor-Server"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "automatic"
+	}
+}
