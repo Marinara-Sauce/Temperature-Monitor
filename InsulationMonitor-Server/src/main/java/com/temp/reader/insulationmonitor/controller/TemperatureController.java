@@ -32,7 +32,7 @@ public class TemperatureController {
     public ResponseEntity<Temperature> getTemperature() throws IOException {
         try
         {
-            int temperature = Integer.parseInt(TempReadings.getMostRecentReading());
+            int temperature = (int) Double.parseDouble(TempReadings.getMostRecentReading());
             Temperature temp = new Temperature(temperature);
     
             return new ResponseEntity<Temperature>(temp, HttpStatus.OK);
