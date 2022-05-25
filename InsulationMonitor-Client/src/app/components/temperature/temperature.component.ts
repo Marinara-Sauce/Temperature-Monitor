@@ -17,8 +17,7 @@ export class TemperatureComponent implements OnInit {
 
   constructor(private temperatureService: TemperatureService) { 
     this.tempSubscription = this.temperatureService.getCurrentTemp().subscribe((value) => {
-      this.indoorTemp.temperature = Math.round(value.temperature)
-      this.indoorTemp.dateTaken = ""
+      this.indoorTemp = value
     })
   }
 

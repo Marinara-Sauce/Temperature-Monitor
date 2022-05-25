@@ -1,9 +1,12 @@
 package com.temp.reader.insulationmonitor.controller;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import com.temp.reader.insulationmonitor.model.Temperature;
 import com.temp.reader.insulationmonitor.persistence.TemperatureDAO;
+import com.temp.reader.insulationmonitor.utils.HttpRequest;
 import com.temp.reader.insulationmonitor.utils.TempReadings;
 
 import org.springframework.http.HttpStatus;
@@ -39,6 +42,18 @@ public class TemperatureController {
         } catch (NumberFormatException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/outdoor")
+    @CrossOrigin
+    public ResponseEntity<Temperature> getOutdoorTemperature() throws IOException {
+
+        String apiURL = "https://api.weather.gov/gridpoints/BOX/60,56/forecast/hourly";
+        Map<String, Object> response;
+
+        response = HttpRequest.getHTTPRequest(apiURL);
+        
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
 }
