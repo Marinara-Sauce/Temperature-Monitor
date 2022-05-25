@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Temperature } from 'src/app/interfaces/temperature';
+import { TemperatureService } from 'src/app/services/temperature.service';
 
 @Component({
   selector: 'app-temperature',
@@ -7,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TemperatureComponent implements OnInit {
 
-  constructor() { }
+  indoorTemp!: Temperature;
+  outdoorTemp!: Temperature;
+
+  tempSubscription: Subscription = new Subscription; 
+
+  constructor(private temperatureService: TemperatureService) { 
+    this.tempSubscription = this.temperatureService.getCurrentTemp().subscribe((value) => {
+      this.indoorTemp.temperature = Math.round(value.temperature)
+      this.indoorTemp.dateTaken = ""
+    })
+  }
 
   ngOnInit(): void {
+    
   }
 
 }
