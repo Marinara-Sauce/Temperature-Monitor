@@ -46,14 +46,25 @@ public class TemperatureController {
 
     @GetMapping("/outdoor")
     @CrossOrigin
+    @SuppressWarnings("unchecked")
     public ResponseEntity<Temperature> getOutdoorTemperature() throws IOException {
 
         String apiURL = "https://api.weather.gov/gridpoints/BOX/60,56/forecast/hourly";
         Map<String, Object> response;
 
         response = HttpRequest.getHTTPRequest(apiURL);
+
+        //Begin searching for the temperature
+        response = (Map<String, Object>) response.get("properties");
+        List<Object> periods = (List<Object>) response.get("periods");
+
+        Map<String, Object> currentTemp = (Map<String, Object>) periods.get(0);
         
-        return new ResponseEntity<>(HttpStatus.OK);
+        int temp = (int) currentTemp.get("temperature");
+        String dateTaken = (String) currentTemp.get("startTime");
+
+        Temperature temperature = new Temperature(temp, dateTaken);
+        return new ResponseEntity<Temperature>(temperature, HttpStatus.OK);
     }
     
 }
