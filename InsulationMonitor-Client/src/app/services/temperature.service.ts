@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Temperature } from '../interfaces/temperature';
 
 @Injectable({
@@ -8,7 +9,7 @@ import { Temperature } from '../interfaces/temperature';
 })
 export class TemperatureService {
 
-  private url: string = "http://192.168.1.158:8080/temp"
+  private url: string = environment.apiUrl + "/temp"
 
   constructor(private httpClient: HttpClient) { }
 
