@@ -14,10 +14,15 @@ export class TemperatureComponent implements OnInit {
   outdoorTemp!: Temperature;
 
   tempSubscription: Subscription = new Subscription; 
+  outdoorTempSubscription: Subscription = new Subscription;
 
   constructor(private temperatureService: TemperatureService) { 
     this.tempSubscription = this.temperatureService.getCurrentTemp().subscribe((value) => {
       this.indoorTemp = value
+    })
+
+    this.outdoorTempSubscription = this.temperatureService.getOutdoorTemp().subscribe((value) => {
+      this.outdoorTemp = value
     })
   }
 

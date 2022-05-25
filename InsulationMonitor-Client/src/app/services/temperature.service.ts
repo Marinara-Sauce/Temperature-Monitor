@@ -15,4 +15,8 @@ export class TemperatureService {
   getCurrentTemp(): Observable<Temperature> {
     return this.httpClient.get<Temperature>(this.url);
   }
+
+  getOutdoorTemp(): Observable<Temperature> {
+    return this.httpClient.get<Temperature>(this.url + "/outdoor")
+  }
 }
