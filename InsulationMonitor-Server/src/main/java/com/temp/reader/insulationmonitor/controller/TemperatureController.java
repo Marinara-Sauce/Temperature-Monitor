@@ -1,11 +1,14 @@
 package com.temp.reader.insulationmonitor.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.temp.reader.insulationmonitor.model.Temperature;
-import com.temp.reader.insulationmonitor.persistence.TemperatureDAO;
+import com.temp.reader.insulationmonitor.persistence.TemperatureDAOFile;
 import com.temp.reader.insulationmonitor.utils.HttpRequest;
 import com.temp.reader.insulationmonitor.utils.TempReadings;
 
@@ -20,14 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("temp")
 public class TemperatureController {
 
-    private TemperatureDAO tempDao;
+    private TemperatureDAOFile tempDao;
 
-    public TemperatureController(TemperatureDAO tempDao) {
+    public TemperatureController(TemperatureDAOFile tempDao) {
         this.tempDao = tempDao;
-    }
-
-    public TemperatureController() {
-
     }
 
     @GetMapping("")
@@ -36,7 +35,9 @@ public class TemperatureController {
         try
         {
             int temperature = (int) Double.parseDouble(TempReadings.getMostRecentReading());
-            Temperature temp = new Temperature(temperature);
+            Temperature temp = new Temperature(temperature, true);
+
+            tempDao.addTemperature(temp);
     
             return new ResponseEntity<Temperature>(temp, HttpStatus.OK);
         } catch (NumberFormatException e) {
@@ -47,7 +48,7 @@ public class TemperatureController {
     @GetMapping("/outdoor")
     @CrossOrigin
     @SuppressWarnings("unchecked")
-    public ResponseEntity<Temperature> getOutdoorTemperature() throws IOException {
+    public ResponseEntity<Temperature> getOutdoorTemperature() throws IOException, ParseException {
 
         String apiURL = "https://api.weather.gov/gridpoints/BOX/60,56/forecast/hourly";
         Map<String, Object> response;
@@ -62,9 +63,34 @@ public class TemperatureController {
         
         int temp = (int) currentTemp.get("temperature");
         String dateTaken = (String) currentTemp.get("startTime");
+        dateTaken = dateTaken.replace("T", " ");
+        //dateTaken = dateTaken.split("-")[0];
 
-        Temperature temperature = new Temperature(temp, dateTaken);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date taken = formatter.parse(dateTaken);
+
+        Temperature temperature = new Temperature(temp, taken.toString(), false);
+
+        tempDao.addTemperature(temperature);
+
         return new ResponseEntity<Temperature>(temperature, HttpStatus.OK);
     }
-    
+
+    @GetMapping("/all")
+    @CrossOrigin
+    public ResponseEntity<Temperature[]> getAllTemperatures() throws IOException {
+        return new ResponseEntity<Temperature[]>(tempDao.getTemperatureArray(), HttpStatus.OK);
+    }
+
+    @GetMapping("/all/indoor")
+    @CrossOrigin
+    public ResponseEntity<Temperature[]> getAllIndoorTemperatures() throws IOException {
+        return new ResponseEntity<Temperature[]>(tempDao.getSpecificTemp(true), HttpStatus.OK);
+    }
+
+    @GetMapping("/all/outdoor")
+    @CrossOrigin
+    public ResponseEntity<Temperature[]> getAllOutdoorTemperatures() throws IOException {
+        return new ResponseEntity<Temperature[]>(tempDao.getSpecificTemp(false), HttpStatus.OK);
+    }
 }
