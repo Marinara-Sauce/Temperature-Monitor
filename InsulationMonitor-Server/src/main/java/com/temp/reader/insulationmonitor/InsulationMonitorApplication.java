@@ -19,6 +19,11 @@ public class InsulationMonitorApplication {
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(task, new Date(), 10000);
 
+		//Setup the recordings
+		TimerTask recordingTask = new ReadTempTask();
+		Timer recordingTimer = new Timer();
+		recordingTimer.scheduleAtFixedRate(recordingTask, new Date(), 3600000);
+
 		SpringApplication.run(InsulationMonitorApplication.class, args);
 	}
 

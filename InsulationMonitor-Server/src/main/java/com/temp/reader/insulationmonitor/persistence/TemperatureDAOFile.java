@@ -38,7 +38,10 @@ public class TemperatureDAOFile
 
     private boolean save() throws IOException
     {
-        Temperature[] tempArray = (Temperature[]) temperatures.toArray();
+        Temperature[] tempArray = new Temperature[temperatures.size()];
+
+        for (int i = 0 ; i < temperatures.size() ; i++)
+            tempArray[i] = temperatures.get(i);
 
         mapper.writeValue(new File(filename), tempArray);
 
@@ -47,7 +50,12 @@ public class TemperatureDAOFile
 
     public Temperature[] getTemperatureArray()
     {
-        return (Temperature[]) temperatures.toArray();
+        Temperature[] tempArray = new Temperature[temperatures.size()];
+
+        for (int i = 0 ; i < temperatures.size() ; i++)
+            tempArray[i] = temperatures.get(i);
+
+        return tempArray;
     }
 
     public Temperature[] getSpecificTemp(boolean indoor)
@@ -78,6 +86,12 @@ public class TemperatureDAOFile
 
     public void addTemperature(Temperature t) throws IOException
     {
+        //This is probably the worst code i have ever written
+        for (int i = 0 ; i < temperatures.size() ; i++)
+        {
+            if (t.getDateTaken().equals(temperatures.get(i).getDateTaken()))
+                return;
+        }
         temperatures.add(t);
         save();
     }

@@ -3,10 +3,8 @@ package com.temp.reader.insulationmonitor.utils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,33 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class HttpRequest {
     
-    /***
-     * Converts a map of parameters to a string suitable to be appended to a URL
-     * 
-     * @param params a map of the parameters
-     * @return a string of the parameters to be appended to a URL
-     * @throws UnsupportedEncodingException Error thrown if the encoding is unsuporrted (must be UTF-8)
-     */
-    private static String getParamsString(Map<String, String> params) throws UnsupportedEncodingException
-    {
-        StringBuilder result = new StringBuilder();
-
-        if (params == null)
-            return "";
-
-        result.append("?");
-
-        for (Map.Entry<String, String> entry : params.entrySet())
-        {
-            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-            result.append("&");
-        }
-
-        return result.toString().substring(0, result.toString().length() - 1);
-    }
-
     /***
      * Sends a GET HTTP Request to a URL, returning the result
      * @param _url the url to send the request to
