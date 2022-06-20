@@ -25,6 +25,8 @@ public class TemperatureDAOFile
         load();
     }
 
+    public TemperatureDAOFile() { }
+
     private boolean load() throws IOException {
         temperatures = new ArrayList<>();
 

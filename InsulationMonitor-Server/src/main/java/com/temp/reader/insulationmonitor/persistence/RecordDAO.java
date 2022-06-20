@@ -30,6 +30,11 @@ public class RecordDAO {
         load();
     }
 
+    public RecordDAO() throws IOException
+    {
+        
+    }
+
     private boolean load() throws IOException {
         readings = new ArrayList<>();
 
